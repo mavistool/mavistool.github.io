@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Umss">
+  <meta property="og:title" content="MAVIS: An Intelligent Multimodal Audio-Visual Interactive System Enabling Fluid, Continuous Dialogues"/>
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">    
+  
+  <title>MAVIS</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/audio-table.css">
+  <link rel="stylesheet" type="text/css" href="static/css/dropdown_style.css">
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+<style>
+	footer {
+            background-color: #e0f7fa; /* 浅蓝色背景 */
+            text-align: center; /* 居中文字 */
+            padding: 10px; /* 页脚内边距 */
+            margin-top: 20px; /* 与上面内容的间距 */
+        }
+	
+	/* Case Card Container */
+	.case-container {
+		max-width: 900px;
+		margin: 0 auto 40px;
+	}
+
+	/* Case Card Styles */
+	.case-card {
+		background: #ffffff;
+		border-radius: 10px;
+		padding: 30px 20px; /* Increased padding */
+		margin-bottom: 30px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		overflow: hidden; /* Prevent overflow */
+		position: relative; /* Ensure positioning is relative */
+	}
+
+	.case-card h2 {
+		font-size: 24px;
+		color: #007BFF;
+		margin-bottom: 15px;
+		border-bottom: 2px solid #90caf9;
+		padding-bottom: 5px;
+	}
+
+	/* Dialogue Case Styles */
+	.dialogue-case {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		margin-bottom: 20px;
+		position: relative;
+		padding: 10px 0; /* Space between dialogues */
+	}
+
+	.dialogue-case.left {
+		justify-content: flex-start;
+	}
+
+	.dialogue-case.right {
+		justify-content: flex-end;
+	}
+
+	/* Text bubble styles */
+	.dialogue-case.left .text,
+	.dialogue-case.right .text {
+		background-color: #ffffff;
+		padding: 15px 20px;
+		border-radius: 15px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		max-width: 70%;
+		line-height: 1.6;
+		margin-bottom: 10px;
+		position: relative;
+	}
+
+	.dialogue-case.left .text {
+		background-color: #e3f2fd;
+		border: 1px solid #90caf9;
+		margin-left: 15px; /* Prevent overlap with logo */
+	}
+
+	.dialogue-case.right .text {
+		background-color: #fff8e1;
+		border: 1px solid #ffcc80;
+		margin-right: 15px; /* Prevent overlap with logo */
+	}
+
+	/* Audio styles */
+	.dialogue-case audio {
+		outline: none;
+		margin-right: 15px;
+	}
+
+	/* Logo Styles */
+	.dialogue-case .logo {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		object-fit: cover;
+	}
+
+	.dialogue-case.left .logo {
+		margin-right: 15px;
+	}
+
+	.dialogue-case.right .logo {
+		margin-left: 15px;
+	}
+	.blue-box {
+	    border: 2px solid lightblue;
+	    padding: 10px;
+	    display: inline-block;
+	    margin-top: 10px;
+	    background-color: #fff2fd; 
+	}
+
+	/* Responsive Styles */
+	@media (max-width: 768px) {
+		.dialogue-case {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.dialogue-case.right {
+			align-items: flex-end;
+		}
+
+		.dialogue-case audio {
+			margin: 0 0 10px 0;
+		}
+
+		.dialogue-case.left .text,
+		.dialogue-case.right .text {
+			max-width: 100%;
+			text-align: left;
+		}
+
+		.dialogue-case.left .logo,
+		.dialogue-case.right .logo {
+			margin: 0;
+			position: static;
+			width: 30px;
+			height: 30px;
+		}
+	}
+</style>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+              <h1 id="co-speech-modalities" class="title is-1 publication-title">MAVIS: An Intelligent Multimodal Audio-Visual Interactive System Enabling Fluid, Continuous Dialogues</h1>
+<!--               <h1 class="title is-1 publication-title"></h1> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+                <p>
+					With the rapid advancement of human-computer interaction technologies, interactive companion models for voice dialogue are gaining considerable attention. As a result, developing a model that can interpret real-world audio-visual information and engage in multi-turn spoken dialogue presents great potential to enhance user experience. To this end, we propose MAVIS, a model trained on comprehensive synthetic data that utilizes cross-modal attention mechanisms to effectively interpret audio-visual information from video scenes. By drawing on this modality knowledge, MAVIS generates high-quality dialogue responses that ensure both contextual relevance and stylistic consistency. Evaluations across multiple open-source QA benchmarks underscore MAVIS’s robust multimodal understanding abilities. Furthermore, both subjective and objective metrics confirm its ability to generate contextually appropriate and stylistically consistent outputs in multi-turn dialogue. Our dataset and code will soon be released at www.mavistool.github.io in the future.
+	    </div>
+      </div>
+      <!--/ Abstract. -->
+    </div>
+  </section>
+
+  <!-- <section class="hero">
+    <div class="hero-body">
+        <div class="container">
+          <h1 class="title is-3">MAVIS</h1>
+            <h2><a href="#testset">Output samples of MAVIS on MAVIS-Dataset.</a></h2>		
+          </ul>
+        </div>
+    </div>
+  </section> -->
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">			
+			<h1 id="testset" class="title is-3">
+				Output samples of MAVIS on MAVIS-Dataset.
+				<a href="#footnote">*</a>
+			</h1>		
+
+			<img class="img" src="res/use.png" style="display: block; margin: 0 auto; max-width: 60%; height: auto; border: 2px solid lightgray;">
+			<div class="case-container">
+
+				<div class="case-card">
+					<h2>Case 1</h2>
+
+					<!-- Add video section here -->
+					<div class="video-section" style="margin: 20px 0; text-align: center;">
+						<video controls width="600">
+							<source src="res/example1.mp4" type="video/mp4">
+							<!-- <source src="res/example.mp4" type="video/mp4"> -->
+							Your browser does not support the video tag.
+						</video>
+						<p style="margin-top: 10px;">Demonstration Video</p>
+					</div>
+					<!-- /End of video section -->
+		
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example1/instruct_text_0_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Happy] <br> Look at that drawing of the fish on the whiteboard! It looks so simple but kind of cool.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> I know, right? And with those sound effects, it really brings the drawing to life!
+						</div>
+						<audio controls>
+							<source src="res/example1/instruct_text_1_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example1/instruct_text_2_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> Well, the sound effects also add a playful touch. Do you think they're leading up to something about fish?
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> Probably! I wonder what kind of interesting facts they’re going to share next.
+						</div>
+						<audio controls>
+							<source src="res/example1/instruct_text_3_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example1/instruct_text_4_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> Wait, did you hear that question?
+						</div>
+					</div>
+
+					<hr style="border: 1px dashed lightblue;">
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Happy] <br> Do fish actually drink water? Maybe they'll explain soon on the whiteboard.
+						</div>
+						<audio controls>
+							<source src="res/example1/instruct_text_5_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+							I wonder why the speaker mentioned something about fish not drinking water
+						</div>
+						<audio controls>
+							<source src="res/example1/instruct_text_6_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/qwen.png" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+							The question look likes good things to us.
+						</div>
+						<audio controls>
+							<source src="res/example1/instruct_text_7_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/video-chatgpt.png" alt="System Logo">
+					</div>
+				
+
+				</div>
+
+				<div class="case-card">
+					<h2>Case 2</h2>
+
+					<!-- Add video section here -->
+					<div class="video-section" style="margin: 20px 0; text-align: center;">
+						<video controls width="600">
+							<source src="res/example2.mp4" type="video/mp4">
+							Your browser does not support the video tag.
+						</video>
+						<p style="margin-top: 10px;">Demonstration Video</p>
+					</div>
+					<!-- /End of video section -->
+		
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example2/instruct_text_0_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Curious] <br> Did you see that guy in the mask? It’s really dark.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> Yeah, definitely gives off a creepy vibe. I wonder what he’s holding that stick for.
+						</div>
+						<audio controls>
+							<source src="res/example2/instruct_text_1_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example2/instruct_text_2_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Scared] <br> I don't know, it kind of makes me think something mysterious is about to happen.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> True! The music in the background adds to the suspense. It's intriguing.
+						</div>
+						<audio controls>
+							<source src="res/example2/instruct_text_3_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example2/instruct_text_4_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> I hope whatever happens next isn’t too intense.
+						</div>
+					</div>
+
+					<hr style="border: 1px dashed lightblue;">
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> I get that. The atmosphere feels heavy, both for the sound and images. I'm feeling a little on edge
+						</div>
+						<audio controls>
+							<source src="res/example2/instruct_text_5_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+							Yeah, it might take a darker turn, but I've got to admit, it's holding my interest.
+						</div>
+						<audio controls>
+							<source src="res/example2/instruct_text_6_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/qwen.png" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+							The atmosphere looks like so uncomfortable.
+						</div>
+						<audio controls>
+							<source src="res/example2/instruct_text_7_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/video-chatgpt.png" alt="System Logo">
+					</div>
+				
+
+				</div>
+
+				<div class="case-card">
+					<h2>Case 3</h2>
+
+					<!-- Add video section here -->
+					<div class="video-section" style="margin: 20px 0; text-align: center;">
+						<video controls width="600">
+							<source src="res/example3.mp4" type="video/mp4">
+							Your browser does not support the video tag.
+						</video>
+						<p style="margin-top: 10px;">Demonstration Video</p>
+					</div>
+					<!-- /End of video section -->
+
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example3/instruct_text_0_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> Wow, look at those kids! They seem so engrossed in that show about the ocean.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> Yeah, it's cool! And the music adds such a fun vibe to it.
+						</div>
+						<audio controls>
+							<source src="res/example3/instruct_text_1_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example3/instruct_text_2_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Curious] <br> Yeah! I wonder what they're watching.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br>  It seems like it could be some kind of nature documentary. The man speaking really gives a nice narration.
+						</div>
+						<audio controls>
+							<source src="res/example3/instruct_text_3_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example3/instruct_text_4_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> I didn't notice the sound before, but there’s some lively music and a lot of action almost like a sports highlight.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Curious] <br> Some sounds of a basketball bouncing? That's an interesting combo!
+						</div>
+						<audio controls>
+							<source src="res/example3/instruct_text_5_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example3/instruct_text_6_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> Yes! It really creates an enchanting atmosphere, doesn't it?
+						</div>
+					</div>
+
+					<hr style="border: 1px dashed lightblue;">
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Happy] <br> Exactly! Like a fun journey into the ocean. It's very uplifting!
+						</div>
+						<audio controls>
+							<source src="res/example3/instruct_text_7_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+							True, it almost feels like it sets the mood for an adventure.
+						</div>
+						<audio controls>
+							<source src="res/example3/instruct_text_8_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/qwen.png" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+						Yes, the atmosphere feels uplifting.
+						</div>
+						<audio controls>
+							<source src="res/example3/instruct_text_9_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/video-chatgpt.png" alt="System Logo">
+					</div>
+
+				</div>
+
+				<div class="case-card">
+					<h2>Case 4</h2>
+
+					<!-- Add video section here -->
+					<div class="video-section" style="margin: 20px 0; text-align: center;">
+						<video controls width="600">
+							<source src="res/example4.mp4" type="video/mp4">
+							Your browser does not support the video tag.
+						</video>
+						<p style="margin-top: 10px;">Demonstration Video</p>
+					</div>
+					<!-- /End of video section -->
+
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example4/instruct_text_0_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Happy] <br> Look at that guy holding the can of soda. It seems like a casual moment.
+						</div>
+					</div>
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Happy] <br> I think so! The colors are really striking.
+						</div>
+						<audio controls>
+							<source src="res/example4/instruct_text_1_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+					
+					<div class="dialogue-case left">
+						<img class="logo" src="res/human.png" alt="User Logo">
+						<audio controls>
+							<source src="res/example4/instruct_text_2_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<div class="text">
+							[Neutral] <br> Yeah, and I love how he seems to be enjoying it.
+						</div>
+					</div>
+
+					<hr style="border: 1px dashed lightblue;">
+					
+					<div class="dialogue-case right">
+						<div class="text">
+							[Neutral] <br> I can't seem to see his face, but the music sounds so cheerful!
+						</div>
+						<audio controls>
+							<source src="res/example4/instruct_text_3_0.wav" type="audio/wav">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/MAVIS.svg" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+							Yeah, he really does have a strong look on his face!
+						</div>
+						<audio controls>
+							<source src="res/example4/instruct_text_4_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/qwen.png" alt="System Logo">
+					</div>
+
+					<div class="dialogue-case right">
+						<div class="text">
+						True, it’s interesting how something so simple can catch our attention.
+						</div>
+						<audio controls>
+							<source src="res/example4/instruct_text_5_0.wav" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio>
+						<img class="logo" src="res/video-chatgpt.png" alt="System Logo">
+					</div>
+				</div>
+
+			</div>
+		</div>
+    </div>
+</section>
+
+<footer>
+    <p id="footnote">*All responses are generated based on the spoken dialogue system and synthesized using CosyVoice.</p>
+</footer>
+
+</body>
+</html>

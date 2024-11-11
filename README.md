@@ -1,1 +1,1 @@
-# mavistool.github.io
+# This is the demo page of MAVIS
